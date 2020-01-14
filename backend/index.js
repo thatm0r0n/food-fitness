@@ -20,6 +20,14 @@ connection.once('open',()=>{
 	console.log('connectedto database mongodb @ 27017');
 });
 
+// require the routes
+const userRouter = require('./routes/users');
+const appointmentRouter = require('./routes/appointments');
+
+// use the required routes
+app.use('/users', userRouter);
+app.use('/appointments', appointmentRouter);
+
 //to check whether server is running
 app.listen(port, ()=>{
 	console.log('Server is running on port:',port);

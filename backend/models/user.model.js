@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 // use the schema method
-const schema = mongoose.schema;
+const Schema = mongoose.Schema;
 
 // make a new schema with parameter username and timestamp
 const userSchema = new Schema({

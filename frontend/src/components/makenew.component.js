@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 export default class MakeNew extends Component {
     constructor(props){
         super(props);
-        
+
         this.onChangeUsername = this.onChangeUsername.bind(this);   
         this.onChangeDescription = this.onChangeDescription.bind(this);
         this.onChangeTiming = this.onChangeTiming.bind(this); 
@@ -13,52 +14,64 @@ export default class MakeNew extends Component {
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state ={
-            username:'',
+            username : '',
             description:'',
-            timings:0,
+            timing: 0,
             date: new Date(),
-            users:[]
+            users: []
         }
     }
 
     componentDidMount(){
-        this.setState({
-            users:'test user',
-            username:'test user'
-        })
+       axios.get('http://localhost:5000/users/')
+       .then(response =>{
+           if(response.data.length > 0){
+               this.setState({
+                   users: response.data.map(user => user.username),
+                   username: response.data[0].username
+               })
+           }
+       })
     }
 
     onChangeUsername(e){
         this.setState({
-            username: e.target.value
+            username:e.target.value
         });
     }
+
     onChangeDescription(e){
         this.setState({
-            description: e.target.value
-        }); 
+            description:e.target.value
+        });
     }
+
     onChangeTiming(e){
         this.setState({
-            timings: e.target.value
-        }); 
+            timing:e.target.value
+        });
     }
+
     onChangeDate(date){
         this.setState({
-            date: date
-        }); 
+            date:date
+        });
     }
-  
+    
     onSubmit(e){
         e.preventDefault();
+
         const appointment = {
             username: this.state.username,
             description: this.state.description,
-            timings: this.state.timings,
+            timing: this.state.timing,
             date: this.state.date
         }
+
         console.log(appointment);
-        window.location='/';
+        axios.post('http://localhost:5000/appointments/add',appointment)
+        .then(res=> console.log(res.data));
+        window.location = '/';
     }
 
     render() {

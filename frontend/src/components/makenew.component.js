@@ -71,6 +71,7 @@ export default class MakeNew extends Component {
         console.log(appointment);
         axios.post('http://localhost:5000/appointments/add',appointment)
         .then(res=> console.log(res.data));
+        
         window.location = '/';
     }
 
